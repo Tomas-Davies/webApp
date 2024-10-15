@@ -1,8 +1,3 @@
-<?php 
-    session_start();
-    $page = $_GET["page"] ?? "Dashboard";
-?>
-
 <!doctype html>
 <html lang="en">
 
@@ -44,7 +39,7 @@
 
         <div class="navbar-nav">
             <div class="nav-item text-nowrap">
-                <a class="nav-link px-3" href="logout.php">logout</a>
+                <a class="nav-link px-3" href="Logout">logout</a>
             </div>
         </div>
     </header>
@@ -54,7 +49,7 @@
                 <div class="position-sticky pt-3 sidebar-sticky">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a href="?page=Dashboard" class="nav-link<?php if ($page == "Dashboard") {
+                            <a href="Dashboard" class="nav-link<?php if ($page == "Dashboard") {
                                                                             echo " active";
                                                                         } else {
                                                                             echo " link-dark";
@@ -66,7 +61,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="?page=Items" class="nav-link <?php if ($page == "Items") {
+                            <a href="Items" class="nav-link <?php if ($page == "Items") {
                                                                         echo " active";
                                                                     } else {
                                                                         echo " link-dark";
@@ -78,7 +73,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="?page=Others" class="nav-link <?php if ($page == "Others") {
+                            <a href="Others" class="nav-link <?php if ($page == "Others") {
                                                                         echo " active";
                                                                     } else {
                                                                         echo " link-dark";
@@ -90,7 +85,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="?page=Users" class="nav-link <?php if ($page == "Users") {
+                            <a href="Users" class="nav-link <?php if ($page == "Users") {
                                                                         echo " active";
                                                                     } else {
                                                                         echo " link-dark";
@@ -104,24 +99,4 @@
                     </ul>
                 </div>
             </nav>
-
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-3 pb-3">
-                <?php
-                    if ($page == "Dashboard") {
-                        include "dashboard.php";
-                    } elseif ($page == "Users") {
-                        include "users.php";
-                    } elseif ($page == "Items") {
-                        include "items.php";
-                    } elseif ($page == "Others") {
-                        include "others.php";
-                    } else {
-                        include "error.php";
-                    }
-                ?>
-            </main>
-        </div>
-    </div>
-</body>
-
-</html>

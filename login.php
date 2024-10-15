@@ -14,7 +14,7 @@
         <div class="mb-md-5 mt-md-5 p-5 card bg-body-secondary">
             <h1>Login</h1>
             <p>Please enter your login and password.</p>
-            <form action="index.php" class="row g-3" method="post">
+            <form action="Dashboard" class="row g-3" method="post">
                 <div class="col-12">
                     <label class="form-label" for="name">Name</label>
                     <input class="form-control" type="text" placeholder="name" id="name" name="name">

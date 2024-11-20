@@ -6,8 +6,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="./bootstrap-01.css">
-    <link rel="stylesheet" href="./bootstrap-icons.css">
+    <link rel="stylesheet" href="/bootstrap-01.css">
+    <link rel="stylesheet" href="/bootstrap-icons.css">
 </head>
 
 <style>
@@ -39,7 +39,7 @@
 
         <div class="navbar-nav">
             <div class="nav-item text-nowrap">
-                <a class="nav-link px-3" href="Logout">logout</a>
+                <a class="nav-link px-3" href="/logout">logout</a>
             </div>
         </div>
     </header>
@@ -49,7 +49,7 @@
                 <div class="position-sticky pt-3 sidebar-sticky">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a href="Dashboard" class="nav-link<?php if ($page == "Dashboard") {
+                            <a href="/dashboard/show" class="nav-link<?php if ($router["controller"] == "dashboard") {
                                                                             echo " active";
                                                                         } else {
                                                                             echo " link-dark";
@@ -61,7 +61,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="Items" class="nav-link <?php if ($page == "Items") {
+                            <a href="/items/show" class="nav-link <?php if ($router["controller"] == "items") {
                                                                         echo " active";
                                                                     } else {
                                                                         echo " link-dark";
@@ -73,7 +73,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="Others" class="nav-link <?php if ($page == "Others") {
+                            <a href="/others/show" class="nav-link <?php if ($router["controller"] == "others") {
                                                                         echo " active";
                                                                     } else {
                                                                         echo " link-dark";
@@ -85,7 +85,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="Users" class="nav-link <?php if ($page == "Users") {
+                            <a href="/users/show" class="nav-link <?php if ($router["controller"] == "users") {
                                                                         echo " active";
                                                                     } else {
                                                                         echo " link-dark";
@@ -97,6 +97,16 @@
                             </a>
                         </li>
                     </ul>
+                    <?php 
+                $userId = $_SESSION["loggedUserId"];
+                $query = $mysqli->query("SELECT * FROM users WHERE id = $userId");
+                $userLog = $query->fetch_assoc();
+                $name = "{$userLog["name"]} {$userLog["surname"]}";
+            ?>
+            <div class="mt-5 ms-3 d-flex align-items-center">
+                <span>Welcome: <?php echo $name;?></span>
+            </div>
+            
                 </div>
             </nav>
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-3 pb-3">

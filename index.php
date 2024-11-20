@@ -1,39 +1,60 @@
 <?php 
-    session_start();
-    if(isset($_POST["name"]) && isset($_POST["password"])){
-        $_SESSION["userLoggedIn"] = true;
-        $_SESSION["name"] = $_POST["name"];
-        $_SESSION["password"] = $_POST["password"];
-    } else if(!isset($_SESSION["userLoggedIn"])){
-        $_SESSION["userLoggedIn"] = false;
+
+$urlPrefix = "http";
+
+if(!empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on"){
+    $urlPrefix = "https";
+}
+$host = $_SERVER["HTTP_HOST"];
+$url = "$urlPrefix://$host";
+
+session_start();
+$authorized = $_SESSION["auth"] ?? null;
+
+function connectToDatabase(){
+    $db_host = "db";
+    $db_user = "root";
+    $db_password = "toor";
+    $db_db = "db";
+    $mysqli = new mysqli($db_host, $db_user, $db_password, $db_db);
+
+    return $mysqli;
+}
+
+function processURL(){
+    $URL = explode("/", $_GET["url"] ?? "");
+    $controller = $URL[0] ?? null;
+    $method = $URL[1] ?? null;
+    $paramsCount = count($URL);
+
+    $params = [];
+    for($i = 2; $i < $paramsCount; $i++){
+        $params[] = $URL[$i] ?? null;
     }
 
-    if($_SESSION["userLoggedIn"]){
-        $page = $_GET["pozadavek"] ?? "Dashboard";
+    return ["controller" => $controller, "method" => $method, "params" => $params];
+}
 
-        if ($page == "Logout") {
-            $uri = "http://";
-            if(!empty($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"] == "on")){
-                $uri = "https://";
-            }
-            session_destroy();
-            header("Location: $uri".$_SERVER["HTTP_HOST"]);
-            exit();
-        }
-        include "top-wrapper.php";
-        if ($page == "Dashboard") {
-            include "dashboard.php";
-        } elseif ($page == "Users") {
-            include "users.php";
-        } elseif ($page == "Items") {
-            include "items.php";
-        } elseif ($page == "Others") {
-            include "others.php";
-        } else {
-            include "error.php";
-        }
-        include "bottom-wrapper.php";
-    } else {
-        include "login.php";
-    }
+$mysqli = connectToDatabase();
+$_SESSION["db"] = $mysqli;
+
+if($mysqli->connect_error){
+    echo "Error: $mysqli->connect_error";
+    exit();
+}
+
+if($authorized){
+    $router = processURL();
+} else {
+    $router = ["controller" => "login", "method" => null, "params" => null];
+}
+
+if($router["controller"]){
+    include "Controllers/$router[controller].php";    
+} else {
+    include "error.php";
+}
+
+
+$mysqli->close();
 ?>
